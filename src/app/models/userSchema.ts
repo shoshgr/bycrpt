@@ -8,7 +8,7 @@ const userDetailsSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   phone: { type: String, required: true },
   address: { type: String, required: true },
-  friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UserDetails' }],
+  songs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Song' }],
   cars: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Car' }],
   books: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Book' }],
 });

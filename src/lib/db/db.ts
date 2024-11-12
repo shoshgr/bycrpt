@@ -14,7 +14,7 @@ const connectDb = async (): Promise<void> => {
     } else {
       console.log('Using existing MongoDB connection');
     }
-  } catch (error: any) {
+  } catch (error) {
     console.error("Database connection error:", error.message);
     throw new Error("Failed to connect to database");
   }

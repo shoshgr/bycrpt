@@ -7,8 +7,8 @@ export async function GET(req: Request, { params }: { params: { userId: string }
     await connectDb();
     const { userId } = params;
 
-    const user = await UserDetails.findOne({ userId }).populate('cars');
-    console.log(user.cars);
+    const user = await UserDetails.findOne({ userId }).populate('songs');
+    console.log(user.songs);
 
     if (!user) {
       return NextResponse.json(
@@ -19,14 +19,14 @@ export async function GET(req: Request, { params }: { params: { userId: string }
 
 
     return NextResponse.json(
-      { message: 'Users cars fetched successfully',cars: user.cars },
+      { message: 'Users cars fetched successfully',songs: user.songs },
       { status: 200 }
     );
   } catch (error) {
-    console.error('Error fetching user and cars by userId:', error);
+    console.error('Error fetching user and songs by userId:', error);
 
     return NextResponse.json(
-      { error: 'Failed to fetch user and cars', details: error.message },
+      { error: 'Failed to fetch user and songs', details: error.message },
       { status: 500 }
     );
   }

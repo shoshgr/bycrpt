@@ -16,9 +16,9 @@ const Login: React.FC = () => {
 
         if (result.success) {
             
-            window.location.href = '/pages/home';
+            window.location.href = `/pages/home/${userId}`;
         } else {
-            // אחרת, נציג הודעת שגיאה
+         
             setError(result.error || 'שגיאה לא ידועה');
         }
     };

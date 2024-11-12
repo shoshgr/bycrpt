@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server';
 import connectDb from '@/lib/db/db';
-import Car from '@/app/models/carSchema';
+import Book from '@/app/models/booksSchema';
 import UserDetails from '@/app/models/userSchema';
 
 export async function POST(req) {
   try {
-    const { userId, make, model, year } = await req.json();
+    const { userId, title, author, year } = await req.json();
 
-    if (!userId || !make || !year || !model) {
+    if (!userId || !title || !year || !author) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -16,25 +16,24 @@ export async function POST(req) {
 
     await connectDb();
 
-  
-    const newCar = new Car({ make, model, year ,userId});
-    await newCar.save();
+    const newBook = new Book({ title, author, year ,userId});
+    await newBook.save();
 
-    
+
     await UserDetails.findOneAndUpdate(
       { userId: userId },
-      { $push: { cars: newCar._id} },
+      { $push: { books: newBook._id} },
       { new: true }
     );
 
     return NextResponse.json(
-      { message: 'Car added to user successfully', newCar: newCar },
+      { message: 'Book added to user successfully', newBook: newBook },
       { status: 201 }
     );
   } catch (error) {
-    console.error('Error adding car to user:', error);
+    console.error('Error adding Book to user:', error);
     return NextResponse.json(
-      { error: 'Failed to add car to user', details: error.message },
+      { error: 'Failed to add Book to user', details: error.message },
       { status: 500 }
     );
   }
