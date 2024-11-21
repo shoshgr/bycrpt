@@ -16,7 +16,7 @@ const Login: React.FC = () => {
 
         if (result.success) {
             
-            window.location.href = `/pages/home/${userId}`;
+            window.location.href = `/pages/home/`;
         } else {
          
             setError(result.error || 'שגיאה לא ידועה');

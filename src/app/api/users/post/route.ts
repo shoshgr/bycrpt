@@ -1,15 +1,15 @@
 import { NextResponse } from 'next/server';
-import connectDb from '@/lib/db/db'; 
-
-import UserDetails from '@/app/models/userSchema'; 
-import UserCredentials from '@/app/models/registerSchema'; 
-
+import connectDb from '@/lib/db/db';
+import bcrypt from 'bcryptjs';
+import UserDetails from '@/app/models/userSchema';
+import UserCredentials from '@/app/models/registerSchema';
 
 export async function POST(req) {
+  console.error('Entering the POST request handler');
   try {
-    const { userId,firstName, lastName, email, phone, address, password } = await req.json();
-
-    if (!userId||!firstName || !lastName || !email || !phone || !address || !password) {
+    const { userId, firstName, lastName, email, phone, address, password } = await req.json();
+    debugger;
+    if (!userId || !firstName || !lastName || !email || !phone || !address || !password) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -18,21 +18,30 @@ export async function POST(req) {
 
     await connectDb();
 
-  
-    const newUser = new UserDetails({ userId,firstName, lastName, email, phone, address });
+    const existingUser = await UserCredentials.findOne({ $or: [{ userId }, { email }] });
+    if (existingUser) {
+      return NextResponse.json(
+        { error: 'Username or email already exists' },
+        { status: 400 }
+      );
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    console.error('Hashed Password:', hashedPassword);
+
+    const newUser = new UserDetails({ userId, firstName, lastName, email, phone, address });
     await newUser.save();
 
     const username = firstName;
-
     const newUserCredentials = new UserCredentials({
-       userId,  
-       username,
-       password,
+      userId,
+      username,
+      password: hashedPassword,
     });
     await newUserCredentials.save();
 
     return NextResponse.json(
-      { message: 'User created successfully', user: newUser },
+      { message: 'User created successfully', user: hashedPassword },
       { status: 201 }
     );
   } catch (error) {

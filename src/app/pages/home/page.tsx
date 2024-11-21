@@ -1,14 +1,11 @@
-'use client'
+import React from 'react'
 
-
-
-const Page: React.FC = () => {
- 
+const page = () => {
   return (
     <div>
-     
+      home
     </div>
-  );
-};
+  )
+}
 
-export default Page;
+export default page

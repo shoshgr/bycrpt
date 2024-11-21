@@ -20,9 +20,8 @@ const newUser=new User( userId, firstName, lastName, email, phone, address, pass
 
     if (result.success) {
       setSuccessMessage('המשתמש נרשם בהצלחה');
-      setTimeout(() => {
-        window.location.href = '/home'; 
-      }, 2000); 
+       window.location.href = '/pages/home/ ';
+   
     } else {
       setError(result.error || 'שגיאה לא ידועה');
     }
@@ -107,7 +106,7 @@ const newUser=new User( userId, firstName, lastName, email, phone, address, pass
         </button>
       </form>
 
-      {successMessage && <p className="mt-4 text-green-500">{successMessage}</p>}
+      {successMessage && <p className="mt-4 text-green-500">{successMessage} {}</p>}
       {error && <p className="mt-4 text-red-500">{error}</p>}
     </div>
   );
